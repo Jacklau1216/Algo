@@ -3,7 +3,7 @@
 #a sorted array may not contain inversion number
 # [1,2,3,4,5,6] => no inersion number
 
-
+""""""
 def inversion(arr, start, end):
   num = 0
   for i in range(start, end):
@@ -13,6 +13,13 @@ def inversion(arr, start, end):
         arr[j+1], arr[j] = arr[j], temp
         num += 1
   return num
+
+def swap(arr, start, end):
+  if end - start != 1:
+    if arr[start+1] < arr[start]:
+      arr[start+1], arr[start] = arr[start], arr[start+1]
+      return 1
+  return 0
 
 def merge(arr, start1, end1, start2, end2):
   num = 0
@@ -24,7 +31,7 @@ def merge(arr, start1, end1, start2, end2):
       start2 = end2 + 1
     elif start2 == end2:
       temp.append(arr[start1])
-      num += end1-start1
+      # num += end1-start1
       start1 += 1
     elif arr[start1] < arr[start2]:
       temp.append(arr[start1])
@@ -43,22 +50,28 @@ def count(arr, start, end):
   sum = 0
   if length > 2:
     temp = (end - start) // 2
-    sum += count(arr, start, end - temp)
-    sum += count(arr, start + temp, end)
-    sum += merge(arr, start, end-temp, start+temp, end)
+    start1 = start
+    start2 = start + temp
+    end2 = end
+    if length % 2 == 0:
+      end1 = end - temp
+    else:
+      end1 = end - temp - 1
+    sum += count(arr, start1, end1)
+    sum += count(arr, start2, end2)
+    sum += merge(arr, start1, end1, start2, end2)
     return sum
   else:
-    return inversion(arr, start, end)
+    return swap(arr, start, end)
 
 testing = [1,5,4,8,10,2,6,9,12,11,3,7]
-testing1 = [1,5,4,8,10]
 
+"""
 print(count(testing1, 0, len(testing1)))
 print(testing1)
 """
 print(count(testing, 0 , len(testing)))
 print(testing)
-"""
 
 
 
